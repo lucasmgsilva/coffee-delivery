@@ -1,4 +1,4 @@
-import { IntroductionContainer, ItensContainer } from './styles'
+import { IntroductionContainer, ItemsContainer } from './styles'
 import imageCupOfCoffee from '../../assets/cup-of-coffee.svg'
 import { Item } from './Item'
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
@@ -14,7 +14,7 @@ export function Introduction() {
             hora
           </span>
         </div>
-        <ItensContainer>
+        <ItemsContainer>
           <Item description="Compra simples e segura" bgColor="yellowDark">
             <ShoppingCart />
           </Item>
@@ -27,7 +27,7 @@ export function Introduction() {
           <Item description="O café chega fresquinho até você" bgColor="purple">
             <Coffee />
           </Item>
-        </ItensContainer>
+        </ItemsContainer>
       </div>
       <img src={imageCupOfCoffee} alt="Copo de café" />
     </IntroductionContainer>

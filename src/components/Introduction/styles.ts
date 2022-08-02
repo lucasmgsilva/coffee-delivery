@@ -30,7 +30,7 @@ export const IntroductionContainer = styled.div`
   }
 `
 
-export const ItensContainer = styled.div`
+export const ItemsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, auto));
   row-gap: 1.25rem;
