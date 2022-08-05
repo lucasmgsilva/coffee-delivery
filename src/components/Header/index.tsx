@@ -7,12 +7,12 @@ import { Cart } from './components/Cart'
 export function Header() {
   return (
     <HeaderContainer>
-      <img src={logoCoffeeDelivery} alt="" />
+      <NavLink to="/" title="Home">
+        <img src={logoCoffeeDelivery} alt="" />
+      </NavLink>
       <nav>
-        <NavLink to="/" title="Localização">
-          <Location />
-        </NavLink>
-        <NavLink to="/" title="Carrinho">
+        <Location />
+        <NavLink to="/checkout" title="Carrinho">
           <Cart />
         </NavLink>
       </nav>
