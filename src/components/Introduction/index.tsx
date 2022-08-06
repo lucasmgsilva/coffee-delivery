@@ -16,16 +16,16 @@ export function Introduction() {
         </div>
         <ItemsContainer>
           <Item description="Compra simples e segura" bgColor="yellowDark">
-            <ShoppingCart />
+            <ShoppingCart weight="fill" />
           </Item>
           <Item description="Embalagem mantém o café intacto" bgColor="brown">
-            <Package />
+            <Package weight="fill" />
           </Item>
           <Item description="Entrega rápida e rastreada" bgColor="yellow">
-            <Timer />
+            <Timer weight="fill" />
           </Item>
           <Item description="O café chega fresquinho até você" bgColor="purple">
-            <Coffee />
+            <Coffee weight="fill" />
           </Item>
         </ItemsContainer>
       </div>

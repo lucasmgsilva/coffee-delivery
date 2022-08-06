@@ -56,7 +56,7 @@ export function CoffeeCard({
             </ActionButton>
           </CounterContainer>
           <CartButton>
-            <ShoppingCartSimple size={22} />
+            <ShoppingCartSimple size={22} weight="fill" />
           </CartButton>
         </ActionsContainer>
       </BuyContainer>

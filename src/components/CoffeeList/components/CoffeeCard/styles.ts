@@ -85,6 +85,7 @@ export const ActionButton = styled.button`
   border: none;
   background: transparent;
   color: ${(props) => props.theme.purple};
+  cursor: pointer;
 
   &:hover {
     color: ${(props) => props.theme['purple-dark']};
@@ -97,6 +98,7 @@ export const CartButton = styled.button`
   border: 0;
   padding: 0.5rem;
   width: 2.375rem;
+  cursor: pointer;
 
   &:hover {
     background: ${(props) => props.theme.purple};

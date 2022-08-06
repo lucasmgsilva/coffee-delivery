@@ -4,7 +4,7 @@ import { CartContainer } from './styles'
 export function Cart() {
   return (
     <CartContainer>
-      <ShoppingCart size={22} />
+      <ShoppingCart size={22} weight="fill" />
     </CartContainer>
   )
 }
