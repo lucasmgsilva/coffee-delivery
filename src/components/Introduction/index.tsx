@@ -15,16 +15,32 @@ export function Introduction() {
           </span>
         </div>
         <ItemsContainer>
-          <Item description="Compra simples e segura" bgColor="yellowDark">
+          <Item
+            title={[{ type: 'normal', text: 'Compra simples e segura' }]}
+            bgColor="yellowDark"
+          >
             <ShoppingCart weight="fill" />
           </Item>
-          <Item description="Embalagem mantém o café intacto" bgColor="brown">
+          <Item
+            title={[
+              { type: 'normal', text: 'Embalagem mantém o café intacto' },
+            ]}
+            bgColor="brown"
+          >
             <Package weight="fill" />
           </Item>
-          <Item description="Entrega rápida e rastreada" bgColor="yellow">
+          <Item
+            title={[{ type: 'normal', text: 'Entrega rápida e rastreada' }]}
+            bgColor="yellow"
+          >
             <Timer weight="fill" />
           </Item>
-          <Item description="O café chega fresquinho até você" bgColor="purple">
+          <Item
+            title={[
+              { type: 'normal', text: 'O café chega fresquinho até você' },
+            ]}
+            bgColor="purple"
+          >
             <Coffee weight="fill" />
           </Item>
         </ItemsContainer>

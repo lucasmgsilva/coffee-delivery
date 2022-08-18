@@ -4,7 +4,7 @@ export const CheckoutContainer = styled.div`
   padding: 2.5rem 10rem 0;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(auto, 40rem) 1fr;
   column-gap: 2rem;
 
   > div {

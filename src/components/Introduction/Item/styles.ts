@@ -7,8 +7,13 @@ export const ItemContainer = styled.div`
   align-items: center;
   gap: 0.75rem;
 
-  span {
-    font-size: 1rem;
+  div:last-child {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      font-size: 1rem;
+    }
   }
 `
 

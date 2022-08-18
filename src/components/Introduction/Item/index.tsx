@@ -8,17 +8,37 @@ export const ITEM_BG_COLORS = {
   purple: 'purple',
 } as const
 
+interface ItemText {
+  type: 'normal' | 'strong'
+  text: string
+}
+
 interface ItemProps {
   children: ReactNode
-  description: string
+  title: ItemText[]
+  subtitle?: ItemText[]
   bgColor: keyof typeof ITEM_BG_COLORS
 }
 
-export function Item({ children, description, bgColor }: ItemProps) {
+export function Item({ children, title, subtitle, bgColor }: ItemProps) {
   return (
     <ItemContainer>
       <IconContainer bgColor={bgColor}>{children}</IconContainer>
-      <span>{description}</span>
+      <div>
+        <span>
+          {title?.map((t) =>
+            t.type === 'normal' ? t.text : <strong>{t.text}</strong>,
+          )}
+        </span>
+
+        {subtitle && (
+          <span>
+            {subtitle?.map((t) =>
+              t.type === 'normal' ? t.text : <strong>{t.text}</strong>,
+            )}
+          </span>
+        )}
+      </div>
     </ItemContainer>
   )
 }
