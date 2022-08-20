@@ -27,14 +27,22 @@ export function Item({ children, title, subtitle, bgColor }: ItemProps) {
       <div>
         <span>
           {title?.map((t) =>
-            t.type === 'normal' ? t.text : <strong>{t.text}</strong>,
+            t.type === 'normal' ? (
+              t.text
+            ) : (
+              <strong key={t.text}>{t.text}</strong>
+            ),
           )}
         </span>
 
         {subtitle && (
           <span>
             {subtitle?.map((t) =>
-              t.type === 'normal' ? t.text : <strong>{t.text}</strong>,
+              t.type === 'normal' ? (
+                t.text
+              ) : (
+                <strong key={t.text}>{t.text}</strong>
+              ),
             )}
           </span>
         )}

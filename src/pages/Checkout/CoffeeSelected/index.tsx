@@ -3,6 +3,8 @@ import {
   ActionButton,
   CounterContainer,
 } from '../../../components/CoffeeList/components/CoffeeCard/styles'
+import { useCoffees } from '../../../contexts/CoffeesContext'
+import { useOrders } from '../../../contexts/OrderContext'
 import {
   ActionsContainer,
   CoffeeSelectedContainer,
@@ -13,30 +15,53 @@ import {
 } from './styles'
 
 interface CoffeeSelectedProps {
-  image: string
-  title: string
-  price: number
+  id: string
 }
 
-export function CoffeeSelected({ image, title, price }: CoffeeSelectedProps) {
+export function CoffeeSelected({ id }: CoffeeSelectedProps) {
+  const {
+    cartItems,
+    addAmountCoffeeToCart,
+    removeAmountCoffeeFromCart,
+    removeCoffeeFromCart,
+  } = useOrders()
+  const { coffees } = useCoffees()
+
+  const coffee = coffees.find((coffee) => coffee.id === id)
+  const cartItem = cartItems.find((cartItem) => cartItem.coffeeId === id)
+
+  const totalPrice = (coffee?.price ?? 0) * (cartItem?.amount ?? 0)
+
+  function handleAddAmountCoffeeToCart() {
+    addAmountCoffeeToCart({ coffeeId: id, amount: 1 })
+  }
+
+  function handleRemoveAmountCoffeeFromCart() {
+    removeAmountCoffeeFromCart(id)
+  }
+
+  function handleRemoveCoffeeFromCart() {
+    removeCoffeeFromCart(id)
+  }
+
   return (
     <>
       <CoffeeSelectedContainer>
         <InfoContainer>
-          <img src={image} alt={title} />
+          <img src={coffee?.image} alt={coffee?.title} />
           <DetailsContainer>
-            <span>{title}</span>
+            <span>{coffee?.title}</span>
             <ActionsContainer>
               <CounterContainer>
-                <ActionButton>
+                <ActionButton onClick={handleRemoveAmountCoffeeFromCart}>
                   <Minus size={14} />
                 </ActionButton>
-                <span>1</span>
-                <ActionButton>
+                <span>{cartItem?.amount}</span>
+                <ActionButton onClick={handleAddAmountCoffeeToCart}>
                   <Plus size={14} />
                 </ActionButton>
               </CounterContainer>
-              <RemoveButton>
+              <RemoveButton onClick={handleRemoveCoffeeFromCart}>
                 <Trash size={16} />
                 REMOVER
               </RemoveButton>
@@ -47,7 +72,7 @@ export function CoffeeSelected({ image, title, price }: CoffeeSelectedProps) {
           {Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL',
-          }).format(price)}
+          }).format(totalPrice)}
         </strong>
       </CoffeeSelectedContainer>
 

@@ -1,11 +1,18 @@
 import { MapPin } from 'phosphor-react'
 import { LocationContainer } from './styles'
 
-export function Location() {
+interface LocationProps {
+  city: string
+  state: string
+}
+
+export function Location({ city, state }: LocationProps) {
   return (
     <LocationContainer>
       <MapPin size={22} />
-      <span>Porto Alegre, RS</span>
+      <span>
+        {city}, {state}
+      </span>
     </LocationContainer>
   )
 }

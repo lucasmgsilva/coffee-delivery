@@ -105,6 +105,7 @@ export const PaymentMethod = styled.div<PaymentMethodProps>`
   border-radius: 6px;
   padding: 1rem;
   gap: 0.75rem;
+  border: 1px solid transparent;
   background: ${(props) => {
     if (props.isSelected) {
       return props.theme['purple-light']
@@ -116,7 +117,7 @@ export const PaymentMethod = styled.div<PaymentMethodProps>`
   ${(props) => {
     if (props.isSelected) {
       return css`
-        border: 1px solid ${props.theme.purple};
+        border-color: ${props.theme.purple};
       `
     }
   }}
@@ -165,7 +166,12 @@ export const ConfirmButton = styled.button`
   border: 0;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: ${(props) => props.theme['yellow-dark']};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `

@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const CartContainer = styled.div`
+interface CartContainerProps {
+  amount: number
+}
+
+export const CartContainer = styled.div<CartContainerProps>`
   background: ${(props) => props.theme['yellow-light']};
   padding: 0.5rem;
   height: 2.2rem;
@@ -8,7 +12,7 @@ export const CartContainer = styled.div`
   position: relative;
 
   ::after {
-    content: '3';
+    content: '${(props) => props.amount}';
 
     position: absolute;
     top: -0.625rem;

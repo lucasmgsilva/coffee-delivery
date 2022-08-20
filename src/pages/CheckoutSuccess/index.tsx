@@ -2,8 +2,11 @@ import { CheckoutSuccessContainer, SuccessInfoContainer } from './styles'
 import imageDeliveryman from '../../assets/deliveryman.svg'
 import { Item } from '../../components/Introduction/Item'
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
+import { useOrders } from '../../contexts/OrderContext'
 
 export function CheckoutSuccess() {
+  const { deliveryAddress, paymentMethod } = useOrders()
+
   return (
     <CheckoutSuccessContainer>
       <div>
@@ -15,9 +18,17 @@ export function CheckoutSuccess() {
           <Item
             title={[
               { type: 'normal', text: 'Entrega em ' },
-              { type: 'strong', text: 'Rua João Daniel Martinelli, 102' },
+              {
+                type: 'strong',
+                text: `${deliveryAddress?.street}, ${deliveryAddress?.number}`,
+              },
             ]}
-            subtitle={[{ type: 'normal', text: 'Farrapos - Porto Alegre, RS' }]}
+            subtitle={[
+              {
+                type: 'normal',
+                text: `${deliveryAddress?.district} - ${deliveryAddress?.city}, ${deliveryAddress?.state}`,
+              },
+            ]}
             bgColor="purple"
           >
             <MapPin weight="fill" />
@@ -31,7 +42,17 @@ export function CheckoutSuccess() {
           </Item>
           <Item
             title={[{ type: 'normal', text: 'Pagamento na entrega' }]}
-            subtitle={[{ type: 'strong', text: 'Cartão de Crédito' }]}
+            subtitle={[
+              {
+                type: 'strong',
+                text:
+                  paymentMethod === 'credit'
+                    ? 'Cartão de Crédito'
+                    : paymentMethod === 'debit'
+                    ? 'Cartão de Débito'
+                    : 'Dinheiro',
+              },
+            ]}
             bgColor="yellowDark"
           >
             <CurrencyDollar weight="fill" />

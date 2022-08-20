@@ -21,25 +21,76 @@ import {
   ValuesContainer,
 } from './styles'
 
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+import { PaymentMethodType, useOrders } from '../../contexts/OrderContext'
+import { useCoffees } from '../../contexts/CoffeesContext'
+import { useNavigate } from 'react-router-dom'
+
+const addressFormValidationScheme = zod.object({
+  cep: zod.string().length(9, 'CEP inválido'),
+  street: zod.string().min(3, 'A rua precisa ter pelo menos 3 caracteres.'),
+  number: zod.string().min(1, 'O número precisa ter pelo menos 1 caracter.'),
+  complement: zod.string(),
+  district: zod
+    .string()
+    .min(3, 'O bairro precisa ter pelo menos 3 caracteres.'),
+  city: zod.string().min(1, 'A cidade precisa ter pelo menos 1 caracter.'),
+  state: zod.string().length(2, 'UF inválida'),
+})
+
+export type AddressFormData = zod.infer<typeof addressFormValidationScheme>
+
 export function Checkout() {
-  const [selectedCoffees, setSelectedCoffees] = useState<Coffee[]>([
-    {
-      id: uuidv4(),
-      title: 'Expresso Tradicional',
-      description: 'O tradicional café feito com água quente e grãos moídos',
-      price: 9.9,
-      categories: ['tradicional'],
-      image: 'coffees/expresso.svg',
+  const {
+    cartItems,
+    paymentMethod,
+    setPaymentMethod,
+    deliveryAddress,
+    setDeliveryAddress,
+    confirmOrder,
+  } = useOrders()
+  const { coffees } = useCoffees()
+  const navigate = useNavigate()
+
+  const deliveryFee = cartItems.length > 0 ? 3.5 : 0
+
+  const totalItemsPrice = cartItems
+    .map((cartItem) => {
+      const coffee = coffees.find((coffee) => coffee.id === cartItem.coffeeId)
+      const price = coffee?.price ?? 0
+      return cartItem.amount * price
+    })
+    .reduce((acc, curr) => acc + curr, 0)
+
+  const totalOrderPrice = totalItemsPrice + deliveryFee
+  const isDisabledButton = cartItems.length === 0
+
+  const AddressForm = useForm<AddressFormData>({
+    resolver: zodResolver(addressFormValidationScheme),
+    defaultValues: {
+      cep: deliveryAddress?.cep,
+      street: deliveryAddress?.street,
+      number: deliveryAddress?.number,
+      complement: deliveryAddress?.complement,
+      district: deliveryAddress?.district,
+      city: deliveryAddress?.city,
+      state: deliveryAddress?.state,
     },
-    {
-      id: uuidv4(),
-      title: 'Expresso Americano',
-      description: 'Expresso diluído, menos intenso que o tradicional',
-      price: 9.9,
-      categories: ['tradicional'],
-      image: 'coffees/americano.svg',
-    },
-  ])
+  })
+
+  const { register, handleSubmit } = AddressForm
+
+  function handleCompleteOrder(data: AddressFormData) {
+    setDeliveryAddress(data)
+    confirmOrder()
+    navigate('/checkout/success')
+  }
+
+  function handlePaymentMethodChange(method: PaymentMethodType) {
+    setPaymentMethod(method)
+  }
 
   return (
     <CheckoutContainer>
@@ -52,25 +103,57 @@ export function Checkout() {
             icon={<MapPinLine />}
             iconColor="yellowDark"
           />
-          <DeliveryForm>
+          <DeliveryForm
+            id="deliveryForm"
+            onSubmit={handleSubmit(handleCompleteOrder)}
+          >
             <div>
-              <DeliveryInput type="text" width="12.5rem" placeholder="CEP" />
+              <DeliveryInput
+                type="text"
+                width="12.5rem"
+                placeholder="CEP"
+                {...register('cep')}
+              />
             </div>
             <div>
-              <DeliveryInput type="text" placeholder="Rua" />
+              <DeliveryInput
+                type="text"
+                placeholder="Rua"
+                {...register('street')}
+              />
             </div>
             <div>
-              <DeliveryInput type="text" width="12.5rem" placeholder="Número" />
+              <DeliveryInput
+                type="text"
+                width="12.5rem"
+                placeholder="Número"
+                {...register('number')}
+              />
               <DeliveryInput
                 type="text"
                 placeholder="Complemento"
                 isOptional={true}
+                {...register('complement')}
               />
             </div>
             <div>
-              <DeliveryInput type="text" width="12.5rem" placeholder="Bairro" />
-              <DeliveryInput type="text" placeholder="Cidade" />
-              <DeliveryInput type="text" width="3.75rem" placeholder="UF" />
+              <DeliveryInput
+                type="text"
+                width="12.5rem"
+                placeholder="Bairro"
+                {...register('district')}
+              />
+              <DeliveryInput
+                type="text"
+                placeholder="Cidade"
+                {...register('city')}
+              />
+              <DeliveryInput
+                type="text"
+                width="3.75rem"
+                placeholder="UF"
+                {...register('state')}
+              />
             </div>
           </DeliveryForm>
         </CardContainer>
@@ -82,15 +165,24 @@ export function Checkout() {
             iconColor="purple"
           />
           <PaymentContainer>
-            <PaymentMethod isSelected={true}>
+            <PaymentMethod
+              isSelected={paymentMethod === 'credit'}
+              onClick={() => handlePaymentMethodChange('credit')}
+            >
               <CreditCard size={16} />
               <span>Cartão de Crédito</span>
             </PaymentMethod>
-            <PaymentMethod>
+            <PaymentMethod
+              isSelected={paymentMethod === 'debit'}
+              onClick={() => handlePaymentMethodChange('debit')}
+            >
               <Money size={16} />
               <span>Cartão de Débito</span>
             </PaymentMethod>
-            <PaymentMethod>
+            <PaymentMethod
+              isSelected={paymentMethod === 'money'}
+              onClick={() => handlePaymentMethodChange('money')}
+            >
               <Bank size={16} />
               <span>Dinheiro</span>
             </PaymentMethod>
@@ -100,25 +192,41 @@ export function Checkout() {
       <div>
         <strong>Cafés selecionados</strong>
         <CardContainer hasRoundedEdge>
-          {selectedCoffees.map((coffee) => (
-            <CoffeeSelected
-              key={coffee.id}
-              image={coffee.image}
-              title={coffee.title}
-              price={coffee.price}
-            />
+          {cartItems.map((carItem) => (
+            <CoffeeSelected key={carItem.coffeeId} id={carItem.coffeeId} />
           ))}
 
           <ValuesContainer>
             <span>Total de Itens</span>
-            <span>R$ 29,70</span>
+            <span>
+              {Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              }).format(totalItemsPrice)}
+            </span>
             <span>Entrega</span>
-            <span>R$ 3,50</span>
+            <span>
+              {Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              }).format(deliveryFee)}
+            </span>
             <strong>Total</strong>
-            <strong>R$ 33,20</strong>
+            <strong>
+              {Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              }).format(totalOrderPrice)}
+            </strong>
           </ValuesContainer>
 
-          <ConfirmButton>CONFIRMAR PEDIDO</ConfirmButton>
+          <ConfirmButton
+            type="submit"
+            form="deliveryForm"
+            disabled={isDisabledButton}
+          >
+            CONFIRMAR PEDIDO
+          </ConfirmButton>
         </CardContainer>
       </div>
     </CheckoutContainer>

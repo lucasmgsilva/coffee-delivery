@@ -79,6 +79,8 @@ export const CounterContainer = styled.div`
 
   > span {
     font-size: 1rem;
+    width: 1.25rem;
+    text-align: center;
   }
 `
 export const ActionButton = styled.button`
