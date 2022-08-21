@@ -8,6 +8,16 @@ export const IntroductionContainer = styled.div`
 
   background: url('background-introduction.svg') no-repeat center center;
 
+  @media (max-width: 88rem) {
+    padding: 3rem 1rem;
+    flex-direction: column;
+    align-items: center;
+
+    > img {
+      display: none;
+    }
+  }
+
   > div {
     > div:first-child {
       margin-bottom: 4.125rem;
@@ -35,4 +45,9 @@ export const ItemsContainer = styled.div`
   grid-template-columns: repeat(2, minmax(0, auto));
   row-gap: 1.25rem;
   column-gap: 2.5rem;
+
+  @media (max-width: 45rem) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
 `

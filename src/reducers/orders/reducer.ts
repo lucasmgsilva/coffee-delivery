@@ -3,7 +3,7 @@ import { produce } from 'immer'
 import { AddressFormData } from '../../pages/Checkout'
 
 export interface CartItem {
-  coffeeId: string
+  coffeeId: number
   amount: number
 }
 

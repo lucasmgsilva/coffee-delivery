@@ -3,6 +3,10 @@ import styled from 'styled-components'
 export const CheckoutSuccessContainer = styled.div`
   padding: 2.5rem 10rem 0;
 
+  @media (max-width: 88rem) {
+    padding: 2.5rem 1rem;
+  }
+
   > div:first-child {
     display: flex;
     flex-direction: column;
@@ -27,6 +31,17 @@ export const SuccessInfoContainer = styled.div`
   column-gap: 5rem;
 
   margin-top: 2.5rem;
+
+  @media (max-width: 88rem) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 2rem;
+
+    > img {
+      width: 100%;
+    }
+  }
 
   > div {
     padding: 2.5rem;

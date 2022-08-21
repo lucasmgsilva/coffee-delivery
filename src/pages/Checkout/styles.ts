@@ -7,6 +7,11 @@ export const CheckoutContainer = styled.div`
   grid-template-columns: minmax(auto, 40rem) 1fr;
   column-gap: 2rem;
 
+  @media (max-width: 88rem) {
+    padding: 2.5rem 1rem;
+    display: block;
+  }
+
   > div {
     display: flex;
     flex-direction: column;
@@ -49,6 +54,12 @@ export const DeliveryForm = styled.form`
     display: flex;
     gap: 0.75rem;
   }
+
+  @media (max-width: 88rem) {
+    > div {
+      flex-direction: column;
+    }
+  }
 `
 
 interface DeliveryInputProps {
@@ -87,10 +98,15 @@ export const DeliveryInput = styled.input<DeliveryInputProps>`
   &:focus {
     border: 1px solid ${(props) => props.theme['yellow-dark']};
   }
+
+  @media (max-width: 88rem) {
+    width: 100%;
+  }
 `
 
 export const PaymentContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: 0.75rem;
 `
 interface PaymentMethodProps {

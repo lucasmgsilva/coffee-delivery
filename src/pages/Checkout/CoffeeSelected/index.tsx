@@ -15,7 +15,7 @@ import {
 } from './styles'
 
 interface CoffeeSelectedProps {
-  id: string
+  id: number
 }
 
 export function CoffeeSelected({ id }: CoffeeSelectedProps) {

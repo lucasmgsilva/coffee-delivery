@@ -5,6 +5,11 @@ export const CoffeeSelectedContainer = styled.div`
   gap: 0.5rem 0.25rem;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media (max-width: 88rem) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 export const InfoContainer = styled.div`

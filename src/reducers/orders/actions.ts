@@ -15,14 +15,14 @@ export function addAmountCoffeeToCartAction(item: CartItem) {
   return { type: ActionTypes.ADD_AMOUNT_COFFEE_TO_CART, payload: { item } }
 }
 
-export function removeAmountCoffeeFromCartAction(coffeeId: string) {
+export function removeAmountCoffeeFromCartAction(coffeeId: number) {
   return {
     type: ActionTypes.REMOVE_AMOUNT_COFFEE_FROM_CART,
     payload: { coffeeId },
   }
 }
 
-export function removeCoffeeFromCartAction(coffeeId: string) {
+export function removeCoffeeFromCartAction(coffeeId: number) {
   return { type: ActionTypes.REMOVE_COFFEE_FROM_CART, payload: { coffeeId } }
 }
 

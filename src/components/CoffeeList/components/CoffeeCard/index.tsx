@@ -16,7 +16,7 @@ import {
 } from './styles'
 
 interface CoffeeCardProps {
-  id: string
+  id: number
   image: string
   title: string
   description: string

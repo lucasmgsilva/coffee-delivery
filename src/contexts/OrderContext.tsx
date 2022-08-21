@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useReducer } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react'
 import { AddressFormData } from '../pages/Checkout'
 import { CartItem, ordersReducer } from '../reducers/orders/reducer'
 import {
@@ -17,8 +23,8 @@ interface OrderContextData {
   paymentMethod: PaymentMethodType
   deliveryAddress?: AddressFormData
   addAmountCoffeeToCart: (item: CartItem) => void
-  removeAmountCoffeeFromCart: (coffeeId: string) => void
-  removeCoffeeFromCart: (coffeeId: string) => void
+  removeAmountCoffeeFromCart: (coffeeId: number) => void
+  removeCoffeeFromCart: (coffeeId: number) => void
   setPaymentMethod: (method: PaymentMethodType) => void
   setDeliveryAddress: (address: AddressFormData) => void
   confirmOrder: () => void
@@ -31,11 +37,35 @@ interface OrderProviderProps {
 }
 
 export function OrderContextProvider({ children }: OrderProviderProps) {
-  const [ordersState, dispatch] = useReducer(ordersReducer, {
-    cartItems: [],
-    deliveryAddress: undefined,
-    paymentMethod: 'credit',
-  })
+  const [ordersState, dispatch] = useReducer(
+    ordersReducer,
+    {
+      cartItems: [],
+      deliveryAddress: undefined,
+      paymentMethod: 'credit',
+    },
+    () => {
+      const storageStateAsJSON = localStorage.getItem(
+        '@coffee-delivery:order-state-1.0.0',
+      )
+
+      if (storageStateAsJSON) {
+        return JSON.parse(storageStateAsJSON)
+      }
+
+      return {
+        cartItems: [],
+        deliveryAddress: undefined,
+        paymentMethod: 'credit',
+      }
+    },
+  )
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(ordersState)
+
+    localStorage.setItem('@coffee-delivery:order-state-1.0.0', stateJSON)
+  }, [ordersState])
 
   const { cartItems, paymentMethod, deliveryAddress } = ordersState
 
@@ -43,11 +73,11 @@ export function OrderContextProvider({ children }: OrderProviderProps) {
     dispatch(addAmountCoffeeToCartAction(item))
   }
 
-  function removeAmountCoffeeFromCart(coffeeId: string) {
+  function removeAmountCoffeeFromCart(coffeeId: number) {
     dispatch(removeAmountCoffeeFromCartAction(coffeeId))
   }
 
-  function removeCoffeeFromCart(coffeeId: string) {
+  function removeCoffeeFromCart(coffeeId: number) {
     dispatch(removeCoffeeFromCartAction(coffeeId))
   }
 

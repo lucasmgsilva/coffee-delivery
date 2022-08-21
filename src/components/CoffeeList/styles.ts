@@ -7,6 +7,10 @@ export const CoffeeListContainer = styled.div`
 
   padding: 5.75rem 10rem;
 
+  @media (max-width: 88rem) {
+    padding: 3rem 1rem;
+  }
+
   > h2 {
     font-family: 'Baloo 2', sans-serif;
     font-size: 2rem;
